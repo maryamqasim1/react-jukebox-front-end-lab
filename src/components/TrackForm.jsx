@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const TrackForm = ({ handleAddTrack }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    artist: "",
-  });
+const TrackForm = ({ handleAdd, edit, track, handleEdit, setIsFormOpen }) => {
+  const [formData, setFormData] = useState({});
+
+  useEffect(() => {
+    if (edit) {
+      console.log(edit);
+      setFormData(edit);
+    }
+  }, [edit]);
 
   const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
@@ -12,8 +16,11 @@ const TrackForm = ({ handleAddTrack }) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log("form" + formData);
-    handleAddTrack(formData);
+    if (edit) {
+      handleEdit(formData);
+      setIsFormOpen(false);
+      location.reload()
+    } else handleAdd(formData);
   };
 
   return (

@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
-import trackServe from "./services/trackService";
+import trackService from "./services/trackService";
 import TrackForm from "./components/TrackForm";
+import TrackList from "./components/TrackList";
 
 const App = () => {
-  const [tracks, setTracks] = useState([]);
+  const [tracks, setTracks] = useState();
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [edit, setEdit] = useState();
 
   useEffect(() => {
     const fetchTracks = async () => {
       try {
-        const fetchedTracks = await trackServe.index;
+        const fetchedTracks = await trackService.index();
         setTracks(fetchedTracks);
       } catch (error) {
         console.error(error);
@@ -18,30 +20,50 @@ const App = () => {
     fetchTracks();
   }, []);
 
-  const handleAddTrack = async (formData) => {
-    try {
-      const newTrack = await trackServe.create(formData);
-      setTracks(newTrack);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleAdd = async (formData) => {
+    const newData = await trackService.create(formData);
+    setTracks([...tracks, newData]);
+    setIsFormOpen(false);
   };
+
+  const handleEdit = async (track) => {
+    const newData = await trackService.update(track);
+    setEdit(track);
+  };
+
+  const handleDelete = async (id) => {
+    await trackService.deletee(id);
+    location.reload()
+    console.log(id);
+  };
+
+  if (!tracks) return <h1>Loading...</h1>;
 
   return (
     <>
-      <button
-        onClick={() => {
-          setIsFormOpen(true);
-        }}
-      >
-        Add New Track
-      </button>
       <div>
         {isFormOpen ? (
-          <TrackForm handleAddTrack={handleAddTrack} />
+          <TrackForm
+            handleAdd={handleAdd}
+            edit={edit}
+            handleEdit={handleEdit}
+            setIsFormOpen={setIsFormOpen}
+          />
         ) : (
           <>
-            <h1>Track List</h1>
+            <button
+              onClick={() => {
+                setIsFormOpen(true);
+              }}
+            >
+              Add New Track
+            </button>
+            <TrackList
+              tracks={tracks}
+              setIsFormOpen={setIsFormOpen}
+              handleEdit={handleEdit}
+              handleDelete={handleDelete}
+            />
           </>
         )}
       </div>
