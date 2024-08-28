@@ -3,6 +3,8 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background-color: #1a1a1a;
+  color: white;
 }
 
 .logo {
@@ -33,10 +35,65 @@
   }
 }
 
+.nowPlay {
+  display: flex;
+  justify-content: center;
+  text-align: left;
+}
+
+.golden {
+  color: goldenrod;
+}
+
 .card {
+  background-color: #333333;
   padding: 2em;
+  margin: 1em;
+  border-radius: 10px;
+  color: white;
 }
 
 .read-the-docs {
-  color: #888;
+  color: #333333;
+}
+
+.container {
+  background-color: #282828;
+  border-radius: 10px;
+}
+
+.track-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.container h2 {
+  padding-top: 50px;
+  margin-bottom: 0;
+}
+
+.playCard {
+  width: 40%;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.buttons button {
+  background-color: black;
+  color: white;
+}
+
+button.red {
+  background-color: #ff5733;
+  color: white;
+}
+
+.red {
+  color: #ff5733;
 }

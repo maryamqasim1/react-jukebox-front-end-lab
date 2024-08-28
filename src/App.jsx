@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import trackService from "./services/trackService";
 import TrackForm from "./components/TrackForm";
 import TrackList from "./components/TrackList";
+import NowPlaying from "./components/NowPlaying";
 
 const App = () => {
   const [tracks, setTracks] = useState();
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [edit, setEdit] = useState();
+  const [nowPlaying, setNowPlaying] = useState();
 
   useEffect(() => {
     const fetchTracks = async () => {
@@ -33,8 +35,12 @@ const App = () => {
 
   const handleDelete = async (id) => {
     await trackService.deletee(id);
-    location.reload()
+    location.reload();
     console.log(id);
+  };
+
+  const handlePlaying = async (track) => {
+    setNowPlaying(track);
   };
 
   if (!tracks) return <h1>Loading...</h1>;
@@ -55,6 +61,7 @@ const App = () => {
               onClick={() => {
                 setIsFormOpen(true);
               }}
+              className="red"
             >
               Add New Track
             </button>
@@ -63,7 +70,9 @@ const App = () => {
               setIsFormOpen={setIsFormOpen}
               handleEdit={handleEdit}
               handleDelete={handleDelete}
+              handlePlaying={handlePlaying}
             />
+            <NowPlaying handlePlaying={handlePlaying} nowPlaying={nowPlaying}/>
           </>
         )}
       </div>
